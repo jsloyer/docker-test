@@ -32,6 +32,7 @@ before_install:
   - ps -ef |grep -i docker
   - docker daemon -H fd:// -s devicemapper --storage-opt dm.basesize=30G
   - docker info
+  - docker pull tchughesiv/cf-mini
 
 script:
   - echo "no tests"
