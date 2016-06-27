@@ -33,7 +33,7 @@ before_install:
       sleep 3;
     fi
   - ps -ef |grep -i docker
-  - sudo docker daemon -H fd:// -s devicemapper --storage-opt dm.basesize=30G
+  - sudo docker daemon -H unix:///var/run/docker.sock -s devicemapper --storage-opt dm.basesize=30G
   - docker info
   - docker pull tchughesiv/cf-mini
 
