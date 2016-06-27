@@ -1,6 +1,9 @@
 sudo: true
 language: cpp
 
+services:
+  - docker
+
 os:
   - linux
 
