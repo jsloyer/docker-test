@@ -35,6 +35,7 @@ before_install:
   - ps -ef |grep -i docker
   - sudo docker daemon -H unix:///var/run/docker.sock -s devicemapper --storage-opt dm.basesize=30G
   - docker info
+  - echo "hi"
   - docker pull tchughesiv/cf-mini
 
 script:
