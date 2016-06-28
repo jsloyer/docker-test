@@ -1,9 +1,6 @@
 sudo: true
 language: cpp
 
-services:
-  - docker
-
 os:
   - linux
 
@@ -32,11 +29,8 @@ before_install:
       sh -e /etc/init.d/xvfb start;
       sleep 3;
     fi
-  - ps -ef |grep -i docker
-  - sudo docker daemon -H unix:///var/run/docker.sock -s devicemapper --storage-opt dm.basesize=30G
-  - docker info
-  - echo "hi"
-  - docker pull tchughesiv/cf-mini
+  - vagrant --version
+  - VBoxManage --version
 
 script:
   - echo "no tests"
