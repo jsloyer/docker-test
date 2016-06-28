@@ -4,14 +4,24 @@ build:
     - script:
         name: run tests
         code: |
-          sudo apt-get install linux-headers-`uname -r` build-essential libvpx1 libsdl1.2debian
-          wget https://releases.hashicorp.com/vagrant/1.8.4/vagrant_1.8.4_x86_64.deb
-          sudo dpkg -i vagrant_1.8.4_x86_64.deb
-          wget http://download.virtualbox.org/virtualbox/5.0.22/virtualbox-5.0_5.0.22-108108~Ubuntu~trusty_amd64.deb
-          sudo dpkg -i virtualbox-5.0_5.0.22-108108~Ubuntu~trusty_amd64.deb
+          rvm use ruby-2.2.3
           gem install bosh_cli --no-ri --no-rdoc
-          vagrant --version
-          VBoxManage --version
-          git clone https://github.com/cloudfoundry/bosh-lite.git
-          cd bosh-lite
-          vagrant up --provider=virtualbox
+          apt-get -y update
+          apt-get -y install dnsmasq
+          echo -e "\n\naddress=/.bosh-lite.com/$BOSH_LITE_IP" >> /etc/dnsmasq.conf
+          sed -i '1 i\nameserver 127.0.0.1' /etc/resolv.conf
+          echo 'starting dnsmasq'
+          dnsmasq
+          git clone https://github.com/cloudfoundry/cf-release
+          export CF_RELEASE_DIR="$PWD/cf-release"
+          bosh -n target $BOSH_TARGET lite
+          bosh login $BOSH_USERNAME $BOSH_PASSWORD
+          wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64
+          mkdir bin
+          mv spiff_linux_amd64 bin/spiff
+          chmod 755 bin/spiff
+          export PATH=$PWD/bin:$PATH
+          cd ${CF_RELEASE_DIR}
+          scripts/generate-bosh-lite-dev-manifest
+          export CF_RELEASE_MANIFEST="${CF_RELEASE_DIR}/bosh-lite/deployments/cf.yml"
+          export version=`tail -2 releases/index.yml | grep " version: " | cut -f 2 -d "'"`

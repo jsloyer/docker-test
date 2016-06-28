@@ -4,9 +4,6 @@ language: cpp
 os:
   - linux
 
-services:
-  - docker
-
 before_install:
   - rvm use ruby-2.2.3
   - gem install bosh_cli --no-ri --no-rdoc
