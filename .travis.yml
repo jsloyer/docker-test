@@ -4,27 +4,13 @@ language: cpp
 os:
   - linux
 
-addons:
-  apt:
-    packages:
-      - linux-headers-`uname -r`
-      - build-essential
-      - libvpx1
-      - libsdl1.2debian
+services:
+  - docker
 
 before_install:
   - rvm use 2.2
-  - wget https://releases.hashicorp.com/vagrant/1.8.4/vagrant_1.8.4_x86_64.deb
-  - sudo dpkg -i vagrant_1.8.4_x86_64.deb
-  - wget http://download.virtualbox.org/virtualbox/5.0.22/virtualbox-5.0_5.0.22-108108~Ubuntu~trusty_amd64.deb
-  - sudo dpkg -i virtualbox-5.0_5.0.22-108108~Ubuntu~trusty_amd64.deb
   - gem install bosh_cli --no-ri --no-rdoc
-  - vagrant --version
-  - VBoxManage --version
-  - git clone https://github.com/cloudfoundry/bosh-lite.git
-  - cd bosh-lite
-  - vagrant up --provider=virtualbox
-  - bosh target 192.168.50.4 lite
+  - docker pull bosh/bosh-lite
 
 
 script:
