@@ -10,9 +10,28 @@ services:
 before_install:
   - rvm use ruby-2.2.3
   - gem install bosh_cli --no-ri --no-rdoc
-  - docker pull bosh/bosh-lite:9000.123.0
-  - docker run -d bosh/bosh-lite:9000.123.0 /bin/sh -c "/usr/bin/start-bosh"
-  - docker ps -a
+  - apt-get -y update
+  - apt-get -y install dnsmasq
+  - echo -e "\n\naddress=/.bosh-lite.com/$BOSH_LITE_IP" >> /etc/dnsmasq.conf
+  - sed -i '1 i\nameserver 127.0.0.1' /etc/resolv.conf
+  - echo 'starting dnsmasq'
+  - dnsmasq
+  - git clone https://github.com/cloudfoundry/cf-release
+  - export CF_RELEASE_DIR="$PWD/cf-release"
+  - bosh -n target $BOSH_TARGET lite
+  - bosh login $BOSH_USERNAME $BOSH_PASSWORD
+  - wget https://github.com/cloudfoundry-incubator/spiff/releases/download/v1.0.7/spiff_linux_amd64
+  - mkdir bin
+  - mv spiff_linux_amd64 bin/spiff
+  - chmod 755 bin/spiff
+
+  - export PATH=$PWD/bin:$PATH
+
+  - cd ${CF_RELEASE_DIR}
+  - scripts/generate-bosh-lite-dev-manifest
+  - export CF_RELEASE_MANIFEST="${CF_RELEASE_DIR}/bosh-lite/deployments/cf.yml"
+  - export version=`tail -2 releases/index.yml | grep " version: " | cut -f 2 -d "'"`
+  - cat releases/cf-$version.yml
 
 
 script:
