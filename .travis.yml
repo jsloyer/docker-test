@@ -10,8 +10,8 @@ services:
 before_install:
   - rvm use ruby-2.2.3
   - gem install bosh_cli --no-ri --no-rdoc
-  - docker pull bosh/bosh-lite
-  - docker run -d bosh/bosh-lite /bin/sh -c "ls"
+  - docker pull bosh/bosh-lite:9000.123.0
+  - docker run -d bosh/bosh-lite /bin/sh -c "/usr/bin/start-bosh"
   - docker ps -a
 
 
