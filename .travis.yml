@@ -7,6 +7,8 @@ os:
 addons:
   apt:
     packages:
+      - linux-headers
+      - build-essential
       - virtualbox
       - virtualbox-ose-dkms
 
