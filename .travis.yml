@@ -30,8 +30,6 @@ before_install:
   - cd ${CF_RELEASE_DIR}
   - scripts/generate-bosh-lite-dev-manifest
   - export CF_RELEASE_MANIFEST="${CF_RELEASE_DIR}/bosh-lite/deployments/cf.yml"
-  - export version=`tail -2 releases/index.yml | grep " version: " | cut -f 2 -d "'"`
-  - cat releases/cf-$version.yml
 
 
 script:
