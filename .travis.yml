@@ -9,9 +9,10 @@ addons:
     packages:
       - linux-headers-`uname -r`
       - build-essential
+      - virtualbox
+      - virtualbox-ose-dkms
 
 before_install:
-  - sudo apt-get install virtualbox virtualbox-ose-dkms
   - rvm use 2.2
   - wget https://releases.hashicorp.com/vagrant/1.8.4/vagrant_1.8.4_x86_64.deb
   - sudo dpkg -i vagrant_1.8.4_x86_64.deb
@@ -21,6 +22,7 @@ before_install:
   - git clone https://github.com/cloudfoundry/bosh-lite.git
   - cd bosh-lite
   - vagrant up --provider=virtualbox
+  - bosh target 192.168.50.4 lite
 
 
 script:
