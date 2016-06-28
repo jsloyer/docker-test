@@ -25,3 +25,5 @@ build:
           scripts/generate-bosh-lite-dev-manifest
           export CF_RELEASE_MANIFEST="${CF_RELEASE_DIR}/bosh-lite/deployments/cf.yml"
           export version=`tail -2 releases/index.yml | grep " version: " | cut -f 2 -d "'"`
+          echo $version
+          cat $releases/cf-$version.yml
