@@ -16,7 +16,6 @@ addons:
       - zip
       - libgtk2.0-0
       - virtualbox
-      - vagrant
 
 before_install:
   - git submodule update --init --recursive
@@ -31,8 +30,9 @@ before_install:
       sh -e /etc/init.d/xvfb start;
       sleep 3;
     fi
-  - rvm install 2.2
   - rvm use 2.2
+  - wget https://releases.hashicorp.com/vagrant/1.8.4/vagrant_1.8.4_x86_64.deb
+  - sudo dpkg -i vagrant_1.8.4_x86_64.deb
   - gem install bosh_cli --no-ri --no-rdoc
   - vagrant --version
   - VBoxManage --version
